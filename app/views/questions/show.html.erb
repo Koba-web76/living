@@ -1,0 +1,49 @@
+<h1><%= @question.title %></h1>
+
+<p>
+  <%= simple_format(@question.body) %>
+</p>
+
+<!-- 写真がある場合だけ表示 -->
+<% if @question.image.attached? %>
+  <%= image_tag @question.image, width: 300 %>
+<% end %>
+
+<p>
+  投稿者：<%= @question.user.name %><br>
+  投稿日：<%= @question.created_at.strftime("%Y-%m-%d %H:%M") %>
+</p>
+
+<p>カテゴリ：<%= @question.category.name if @question.category.present? %></p>
+
+<hr>
+<h2>回答一覧</h2>
+<% @answers.each do |answer| %>
+  <div style="margin-bottom: 20px;">
+    <p><%= simple_format(answer.body) %></p>
+    <% if answer.image.attached? %>
+      <%= image_tag answer.image, width: 200 %>
+    <% end %>
+    <small>
+      投稿者：<%= answer.user.name %> |
+      投稿日：<%= answer.created_at.strftime("%Y-%m-%d %H:%M") %>
+    </small>
+  </div>
+<% end %>
+
+<hr>
+
+<h2>回答を書く</h2>
+<%= form_with model: [@question, @answer], local: true, html: { multipart: true } do |f| %>
+  <div>
+    <%= f.text_area :body, rows: 5 %>
+  </div>
+  <div>
+    <%= f.file_field :image %>
+  </div>
+  <div>
+    <%= f.submit "投稿する" %>
+  </div>
+<% end %>
+
+<%= link_to "質問一覧へ戻る", questions_path %>

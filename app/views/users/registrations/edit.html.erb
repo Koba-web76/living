@@ -1,0 +1,85 @@
+<h2>Edit <%= resource_name.to_s.humanize %></h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <%= render "users/shared/error_messages", resource: resource %>
+
+  <!--アカウント編集時に名前を入力できるようにフォームを追加-->
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
+  </div>
+
+  <!--アカウント編集時にプロフィールを入力できるようにフォームを追加-->
+  <div class="field">
+    <%= f.label :profile %><br />
+    <%= f.text_area :profile, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <!-- 年代 -->
+  <div class="field">
+    <%= f.label :age_group, "年齢帯" %><br />
+    <%= f.select :age_group, ["10代","20代","30代","40代","50代","60歳以上"], include_blank: true %>
+  </div>
+
+  <!-- 性別 -->
+  <div class="field">
+    <%= f.label :gender, "性別" %><br />
+    <%= f.select :gender, ["男性", "女性",], include_blank: true %>
+  </div>
+
+  <!-- 職業 -->
+  <div class="field">
+    <%= f.label :stat, "職業" %><br />
+    <%= f.select :stat, ["学生", "社会人","その他"], include_blank: true %>
+  </div>
+
+  <!-- 住居地域 -->
+  <div class="field">
+    <%= f.label :area, "住居地域" %><br />
+    <%= f.select :area, ["都市","郊外","地方"], include_blank: true %>
+  </div>
+
+  <!-- 住居 -->
+  <div class="field">
+    <%= f.label :type, "住居" %><br />
+    <%= f.select :room_type, ["アパート","マンション","一軒家","その他"], include_blank: true %>
+  </div>
+
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+    <%= f.password_field :password, autocomplete: "new-password" %>
+    <% if @minimum_password_length %>
+      <br />
+      <em><%= @minimum_password_length %> characters minimum</em>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+    <%= f.password_field :current_password, autocomplete: "current-password" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Update" %>
+  </div>
+<% end %>
+
+<h3>Cancel my account</h3>
+
+<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
+
+<%= link_to "Back", :back %>

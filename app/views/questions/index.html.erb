@@ -1,0 +1,48 @@
+<%= link_to "投稿一覧に戻る", tweets_path %>
+<%= link_to "新しい質問を投稿する", new_question_path %>
+<div class="tweets-page">
+  <!-- 左側：絞り込みフォーム -->
+  <aside class="filters">
+    <h1>投稿を検索</h1>
+    <%= form_tag({controller:"tweets",action:"index"}, method: :get) do %>
+      <%= text_field_tag :search %>
+      <%= submit_tag '商品名を検索する'  %>
+    <% end %>
+
+    <%= form_tag questions_path, method: :get do %>
+      <% QuestionCategory.order(:id).each do |category| %>
+        <div>
+          <%= check_box_tag "question_category_ids[]", category.id, params[:question_category_ids]&.include?(category.id.to_s), id: "question_category_ids_#{category.id}" %>
+          <%= label_tag "question_category_ids_#{category.id}", category.name %>
+        </div>
+      <% end %>
+      <%= submit_tag "絞り込む" %>
+    <% end %>
+  </aside>
+
+  <!-- 右側：質問一覧 -->
+    <div class="tweets-container">
+    <h3>質問一覧</h3>
+    <ul>
+      <% @questions.each do |q| %>
+        <li>
+          <%= link_to q.title, question_path(q) %>
+
+          <!-- 本文の一部だけ表示したい場合 -->
+          <p><%= truncate(q.body, length: 50) %></p>
+
+          <!-- 写真がある場合（ActiveStorage） -->
+          <% if q.image.attached? %>
+            <%= image_tag q.image, size: "200x200" %>
+          <% end %>
+          <p>カテゴリ：<%= q.category.name if q.category.present? %></p>
+        </li>
+        <% if user_signed_in? && current_user.id == q.user_id %>
+          <%= link_to "編集", edit_question_path(q) %> |
+          <%= button_to "削除", question_path(q), method: :delete, data: { confirm: "本当に削除しますか？" } %>
+        <% end %>
+      </li>
+    <% end %>
+    </ul>
+  </div>
+</div>

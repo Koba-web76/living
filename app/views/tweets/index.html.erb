@@ -1,0 +1,135 @@
+
+<h3>一覧ページ</h3>
+
+<% if user_signed_in? %>
+  <%= link_to "マイページへ", user_path(current_user.id) %>
+<% end %>
+<%= link_to "いいね数ランキングを見る", like_tweets_path, class: "btn btn-primary" %>
+<%= link_to "質問一覧へ", questions_path %>
+<%= link_to "新規投稿へ", new_tweet_path %>
+
+<div class="tweets-page">
+  <!-- 左側：絞り込みフォーム -->
+  <aside class="filters">
+    <h3>投稿を検索</h3>
+    <%= form_tag({controller:"tweets",action:"index"}, method: :get) do %>
+      <%= text_field_tag :search %>
+      <%= submit_tag '商品名を検索する'  %>
+    <% end %>
+
+    <%= form_with url: tweets_path, method: :get, local: true do |f| %>
+
+      <!-- 年齢帯 -->
+      <p>年齢帯:</p>
+      <% ["10代","20代","30代","40代","50代","60歳以上"].each do |age| %>
+        <%= check_box_tag "age_group[]", age, params[:age_group]&.include?(age) %>
+        <%= age %>
+      <% end %>
+
+      <!-- 性別 -->
+      <p>性別:</p>
+      <% ["男性", "女性"].each do |gender| %>
+        <%= check_box_tag "gender[]", gender, params[:gender]&.include?(gender) %>
+        <%= gender %>
+      <% end %>
+
+      <!-- 職業 -->
+      <p>職業:</p>
+      <% ["学生", "社会人","その他"].each do |stat| %>
+        <%= check_box_tag "stat[]", stat, params[:stat]&.include?(stat) %>
+        <%= stat %>
+      <% end %>
+
+      <!-- 住居地域 -->
+      <p>住居地域:</p>
+      <% ["都市","郊外","地方"].each do |area| %>
+        <%= check_box_tag "area[]", area, params[:area]&.include?(area) %>
+        <%= area %>
+      <% end %>
+
+      <!-- 住居 -->
+      <p>住居:</p>
+      <% ["アパート","マンション","一軒家","その他"].each do |type| %>
+        <%= check_box_tag "room_type[]", type, params[:room_type]&.include?(type) %>
+        <%= type %>
+      <% end %>
+
+      <!-- カテゴリ -->
+      <p>カテゴリ:</p>
+      <% Category.all.each do |category| %>
+        <div>
+          <%= check_box_tag "category_ids[]", category.id, params[:category_ids]&.include?(category.id.to_s), id: "category_ids_#{category.id}" %>
+          <%= label_tag "category_ids_#{category.id}", category.name %>
+        </div>
+      <% end %>
+
+      <!-- タグ -->
+      <p>タグ:</p>
+      <ul>
+        <% Tag.all.each do |t| %>
+          <li>
+            <%= check_box_tag "tag_ids[#{t.name}]", "1", params.dig(:tag_ids, t.name) == "1" %>
+            <%= t.name %>
+          </li>
+        <% end %>
+      </ul>
+
+      <%= f.submit "検索" %>
+    <% end %>
+
+    <%= form_tag({controller:"tweets",action:"index"}, method: :get) do %>
+        <%= text_field_tag :tag %>
+        <%= submit_tag 'タグを追加' %>
+    <% end %>
+  </aside>
+  
+
+  <!-- 右側：投稿一覧 -->
+    <div class="tweets-container">
+    <% @tweets.each do |t| %>
+      <% t.tags.each do |tag| %>
+          <span><%= tag.name %></span>
+      <% end %>
+      <div class="tweet">
+      
+        <p>投稿者：<%= t.user_name %></p>
+
+        <p>商品名: <%= t.name %></p>
+        <%= image_tag t.image_url, size: "250x200" if t.image? %>
+        <div>
+        <span class="star-rating">
+          <span class="star-rating-front" style="width: <%= getPercent(t.overall) %>%;">★★★★★</span>
+          <span class="star-rating-back">★★★★★</span>
+        </span> 
+        </div>
+        <%= t.setumei %>
+
+        <p>カテゴリ：<%= t.category.name if t.category.present? %></p>
+        
+        <% if user_signed_in? %>
+        <% if current_user.already_liked?(t) %>
+            <%= button_to tweet_like_path(id: t.id, tweet_id: t.id), method: :delete do %>
+                <p>いいねを取り消す</p><%= t.likes.count %>
+            <% end %>
+        <% else %>
+            <%= button_to tweet_likes_path(id: t.id, tweet_id: t.id), method: :post do %>
+                <p>いいね👍</p><%= t.likes.count %>
+            <% end %>
+        <% end %>
+    <% else %>
+        <p>いいねの数 = <%= t.likes.count %></p>
+    <% end %>
+        <p>コメント数：<%= t.comments.count %></p>
+        <%= t.created_at %>
+        <%= link_to "詳細", tweet_path(t.id) %>
+        <% if user_signed_in? && t.user_id.present? && current_user.id == t.user_id %>
+            <%= link_to "編集する", edit_tweet_path(t) %>
+          <p>
+            <%= button_to "削除する", tweet_path(t), method: :delete, data: { confirm: "本当に削除しますか？" } %>
+          </p>
+        <% end %> 
+      </div>
+      <hr>
+    <% end %>
+  </div>
+</div>

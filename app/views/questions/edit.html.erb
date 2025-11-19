@@ -1,0 +1,26 @@
+<%= form_with model: @question, local: true, html: { multipart: true } do |f| %>
+  <div>
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div>
+    <%= f.label :body %>
+    <%= f.text_area :body %>
+  </div>
+
+  <div>
+    <%= f.label :question_category_id, "カテゴリ" %>
+    <%= f.collection_select :question_category_id, QuestionCategory.all, :id, :name, prompt: "選択してください" %>
+  </div>
+
+  <div>
+    <%= f.label :image %>
+    <%= f.file_field :image %>
+  </div>
+
+  <div>
+    <%= f.submit "質問を投稿する" %>
+  </div>
+<% end %>
+<%= link_to "質問一覧に戻る", questions_path, class: "btn btn-primary" %>

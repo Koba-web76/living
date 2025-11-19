@@ -1,0 +1,81 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+/* 全体ラップ */
+.tweets-page {
+  display: flex; /* 左右並び */
+  gap: 20px;     /* 左右の間隔 */
+  padding: 20px;
+}
+
+.filters {
+  width: 350px; /* 左側の固定幅 */
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.tweets-container {
+  flex: 1; /* 残りの横幅を占有 */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tweet {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 8px;
+}
+.filters input[type="text"] {
+  width: 100%;            /* 親コンテナの幅に合わせる */
+  padding: 8px 10px;      /* 入力しやすい余白 */
+  font-size: 10px;        /* 読みやすさ向上 */
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box; /* padding込みで幅調整 */
+  margin-bottom: 10px;    /* 下にスペースを追加 */
+}
+
+.filters input[type="submit"] {
+  width: 100%;            /* ボタンも幅いっぱいに */
+  padding: 10px;
+  font-size: 10px;
+  border-radius: 4px;
+  border: none;
+  background-color: #00acee;
+  color: white;
+  cursor: pointer;
+}
+
+.filters input[type="submit"]:hover {
+  background-color: #008bbd;
+}
+.filters p {
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.filters input[type="checkbox"] {
+  margin-right: 8px;   /* チェックボックスとラベルの間隔 */
+  transform: scale(1); /* チェックボックスを少し大きくする（任意） */
+}
+
+.filters label,
+.filters span {
+  display: inline-block;
+  width: 300px;  /* ラベルの幅を揃える */
+  vertical-align: middle;
+}

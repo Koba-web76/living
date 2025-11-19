@@ -1,0 +1,40 @@
+<%= form_for @tweet do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name, :size => 140 %>
+  <%= f.label :setumei %>
+  <%= f.text_area :setumei, cols: 30, rows: 2 %>
+  <%= f.label :image %>
+  <%= image_tag @tweet.image_url, size: "250x200" if @tweet.image? %>
+
+  <%= f.radio_button :overall, 5 ,id: 'star1'%>
+  <label for="star1"><span class="text">最高</span>★</label>
+
+  <%= f.radio_button :overall, 4 ,id: 'star2'%>
+  <label for="star2"><span class="text">良い</span>★</label>
+
+  <%= f.radio_button :overall, 3 ,id: 'star3'%>
+  <label for="star3"><span class="text">普通</span>★</label>
+
+  <%= f.radio_button :overall, 2 ,id: 'star4'%>
+  <label for="star4"><span class="text">悪い</span>★</label>
+
+  <%= f.radio_button :overall, 1 ,id: 'star5'%>
+  <label for="star5"><span class="text">最悪</span>★</label>
+
+  <%= f.label :category_id, "カテゴリ" %>
+  <%= f.collection_select :category_id, Category.all, :id, :name, prompt: "選択してください" %>
+  
+  <%= f.label :url, "購入リンク" %>
+  <%= f.text_field :url, placeholder: "https://www.amazon.co.jp/..." %>
+
+  <%= f.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |tag| %>
+            <div class='form-check'>
+                <%= tag.label class: 'form-check-label' do %>
+                    <%= tag.check_box class: 'form-check-input' %>
+                    <%= tag.text %>
+                <% end %>
+            </div>
+  <% end %>
+  <%= f.submit "編集する" %>
+<% end %>
+<%= link_to "Tweet一覧に戻る", tweets_path %>

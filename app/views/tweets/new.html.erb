@@ -1,0 +1,59 @@
+<h3>新規投稿ページ</h3>
+<%= form_for @tweet do |f| %>
+# データ型がtextで自由記述の入力フォーム
+  <div class="field">
+    <%= f.label :name, "商品名"  %>
+    <%= f.text_field :name, :size => "90" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :setumei, "説明（よかったポイント・使い方など）"   %>
+    <%= f.text_area :setumei, :size => "30x2" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :image, "写真" %>
+    <%= f.file_field :image %>
+  </div>
+
+  <div class="post_form">
+    <%= f.radio_button :overall, 5 ,id: 'star1'%>
+    <label for="star1"><span class="text">最高</span>★</label>
+
+    <%= f.radio_button :overall, 4 ,id: 'star2'%>
+    <label for="star2"><span class="text">良い</span>★</label>
+
+    <%= f.radio_button :overall, 3 ,id: 'star3'%>
+    <label for="star3"><span class="text">普通</span>★</label>
+
+    <%= f.radio_button :overall, 2 ,id: 'star4'%>
+    <label for="star4"><span class="text">悪い</span>★</label>
+
+    <%= f.radio_button :overall, 1 ,id: 'star5'%>
+    <label for="star5"><span class="text">最悪</span>★</label>
+ </div>
+
+  <div>
+    <%= f.label :category_id, "カテゴリ" %>
+    <%= f.collection_select :category_id, Category.all, :id, :name, prompt: "選択してください" %>
+  </div>
+
+  <div class='form-group'>
+        <%= f.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |tag| %>
+            <div class='form-check'>
+                <%= tag.label class: 'form-check-label' do %>
+                    <%= tag.check_box class: 'form-check-input' %>
+                    <%= tag.text %>
+                <% end %>
+            </div>
+        <% end %>
+  </div>
+
+  <div>
+    <%= f.label :url, "購入リンク" %>
+    <%= f.text_field :url, placeholder: "https://www.amazon.co.jp/..." %>
+  </div>
+
+  <%= f.submit "投稿する" %>
+<% end %>
+<%= link_to "一覧に戻る", tweets_path %>

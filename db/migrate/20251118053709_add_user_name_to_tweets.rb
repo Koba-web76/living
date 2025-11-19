@@ -1,0 +1,5 @@
+class AddUserNameToTweets < ActiveRecord::Migration[7.2]
+  def change
+    add_column :tweets, :user_name, :string
+  end
+end
