@@ -24,6 +24,24 @@
     <% if answer.image.attached? %>
       <%= image_tag answer.image, width: 200 %>
     <% end %>
+    <% if user_signed_in? %>
+      <% like = answer.likes.find_by(user: current_user) %>
+      <% if like %>
+        <%= button_to question_answer_like_path(@question, answer, like),
+                      method: :delete,
+                      class: "like-button liked" do %>
+          <span class="label">いいね👍</span>
+          <span class="count"><%= answer.likes.count %></span>
+        <% end %>
+      <% else %>
+        <%= button_to question_answer_likes_path(@question, answer),
+                      method: :post,
+                      class: "like-button not-liked" do %>
+          <span class="label">いいね👍</span>
+          <span class="count"><%= answer.likes.count %></span>
+        <% end %>
+      <% end %>
+    <% end %>
     <small>
       投稿者：<%= answer.user.name %> |
       投稿日：<%= answer.created_at.strftime("%Y-%m-%d %H:%M") %>

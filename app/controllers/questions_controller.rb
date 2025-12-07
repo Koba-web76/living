@@ -5,6 +5,12 @@ class QuestionsController < ApplicationController
   def index
     @questions = Question.order(created_at: :desc)
 
+    # 商品名検索
+    if params[:search].present?
+      @questions = @questions.where("title LIKE ?", "%#{params[:search]}%")
+    end
+
+    # カテゴリ絞り込み
     if params[:question_category_ids].present?
       @questions = @questions.where(question_category_id: params[:question_category_ids])
     end

@@ -24,7 +24,9 @@ Rails.application.routes.draw do
   resources :questions, only: [:index, :new, :create, :show]
 
   resources :questions do
-    resources :answers, only: [:create]
+    resources :answers, only: [:create] do
+      resources :likes, only: [:create, :destroy]
+    end
   end
 
   root 'tweets#index'

@@ -1,12 +1,12 @@
 <%= form_with model: @question, local: true, html: { multipart: true } do |f| %>
   <div>
-    <%= f.label :title %>
-    <%= f.text_field :title %>
+    <%= f.label :title, "質問題名" %>
+    <%= f.text_field :title, :size => "50" %>
   </div>
 
   <div>
-    <%= f.label :body %>
-    <%= f.text_area :body %>
+    <%= f.label :body, "質問内容" %>
+    <%= f.text_area :body, :size => "50x3" %>
   </div>
 
   <div>
@@ -15,7 +15,7 @@
   </div>
 
   <div>
-    <%= f.label :image %>
+    <%= f.label :image, "画像" %>
     <%= f.file_field :image %>
   </div>
 

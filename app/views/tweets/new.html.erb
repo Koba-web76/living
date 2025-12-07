@@ -1,14 +1,14 @@
 <h3>新規投稿ページ</h3>
 <%= form_for @tweet do |f| %>
-# データ型がtextで自由記述の入力フォーム
+
   <div class="field">
     <%= f.label :name, "商品名"  %>
-    <%= f.text_field :name, :size => "90" %>
+    <%= f.text_field :name, :size => "50" %>
   </div>
 
   <div class="field">
     <%= f.label :setumei, "説明（よかったポイント・使い方など）"   %>
-    <%= f.text_area :setumei, :size => "30x2" %>
+    <%= f.text_area :setumei, :size => "50x3" %>
   </div>
 
   <div class="field">

@@ -1,11 +1,21 @@
-<%= link_to "投稿一覧に戻る", tweets_path %>
-<%= link_to "新しい質問を投稿する", new_question_path %>
+<header class="header">
+  <div class="header-left"></div>  <!-- 左側の空白（中央揃えのために必要） -->
+
+  <h1 class="header-title">Living</h1>
+
+  <nav class="header-right">
+    <ul>
+      <li><%= link_to "投稿一覧へ", tweets_path %></li>
+      <li><%= link_to "新しい質問を投稿", new_question_path %></li>
+    </ul>
+  </nav>
+</header>
 <div class="tweets-page">
   <!-- 左側：絞り込みフォーム -->
   <aside class="filters">
     <h1>投稿を検索</h1>
-    <%= form_tag({controller:"tweets",action:"index"}, method: :get) do %>
-      <%= text_field_tag :search %>
+    <%= form_tag({ controller: "questions", action: "index" }, method: :get) do %>
+      <%= text_field_tag :search, params[:search], placeholder: "商品名を入力" %>
       <%= submit_tag '商品名を検索する'  %>
     <% end %>
 
@@ -30,15 +40,11 @@
 
           <!-- 本文の一部だけ表示したい場合 -->
           <p><%= truncate(q.body, length: 50) %></p>
-
-          <!-- 写真がある場合（ActiveStorage） -->
-          <% if q.image.attached? %>
-            <%= image_tag q.image, size: "200x200" %>
-          <% end %>
           <p>カテゴリ：<%= q.category.name if q.category.present? %></p>
         </li>
+          <p>解答数：<%= q.answers.count %></p>
         <% if user_signed_in? && current_user.id == q.user_id %>
-          <%= link_to "編集", edit_question_path(q) %> |
+          <%= link_to "編集", edit_question_path(q) %> 
           <%= button_to "削除", question_path(q), method: :delete, data: { confirm: "本当に削除しますか？" } %>
         <% end %>
       </li>

@@ -20,6 +20,51 @@
   padding: 20px;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;  /* 左・中央・右に配置 */
+  align-items: center;
+  padding: 20px;
+  position: relative;
+}
+
+.header-left {
+  width: 33%;       /* 左の空白 */
+}
+
+.header-title {
+  font-size: 3.0rem;
+  font-weight: bold;
+  text-align: center;
+  width: 33%;       /* 中央のブロック */
+}
+
+.header-right {
+  width: 33%;       /* 右ブロック */
+  text-align: right;
+}
+
+.header-right ul {
+  display: flex;
+  gap: 20px;   /* ボタン同士の余白 */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center; 
+}
+
+.header-right li {
+  display: flex;
+  align-items: center;  /* ← li 内の要素を中央に揃える */
+}
+
+.header-right li a {
+  display: inline-block;  /* ← ブロック化してズレ防止 */
+  font-size: 1.2rem;
+  text-decoration: none;
+  line-height: 1.2;       /* ← 行の高さを固定 */
+}
+
 .filters {
   width: 350px; /* 左側の固定幅 */
   background-color: rgba(255, 255, 255, 0.9);
@@ -31,13 +76,15 @@
   flex: 1; /* 残りの横幅を占有 */
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
+  padding: 10px 15px;          /* 投稿の余白 */
 }
 
 .tweet {
+  max-width: 1000px;   /* 最大幅を600pxに制限 */
   background-color: rgba(255, 255, 255, 0.9);
   padding: 15px;
-  border-radius: 8px;
+  border-bottom: 1px solid #333; /* 下に太線を追加 */
 }
 .filters input[type="text"] {
   width: 100%;            /* 親コンテナの幅に合わせる */
@@ -78,4 +125,95 @@
   display: inline-block;
   width: 300px;  /* ラベルの幅を揃える */
   vertical-align: middle;
+}
+
+.like-button {
+  padding: 6px 4px;        /* 内側余白を小さく */
+  font-size: 12px;         /* 文字サイズを小さく */
+  border-radius: 1px;      /* 角丸 */
+  border: 1px solid #333;  /* 枠線 */
+  background-color: #f0f0f0;
+  cursor: pointer;
+  display: inline-flex;     /* アイコンと文字を横並びに */
+  align-items: center;
+  gap: 2px;                 /* アイコンと文字の間隔 */
+}
+
+.like-button.liked {
+  background: #ffe0e0; /* 背景色 */
+  color: #00b7ff;      /* 文字色を赤に */
+  font-weight: bold;
+}
+
+.like-button:hover {
+  background-color: #ddd;
+}
+
+header {
+    /* ヘッダー全体に背景色とボーダーを設定して画像風の視覚的な枠を作る */
+    background-color: #ffffff; /* 白い背景 */
+    border-bottom: 1px solid #e0e0e0; /* 薄い灰色の境界線 */
+    padding: 10px 30px; /* 上下左右にパディング */
+    display: flex; /* 子要素 (h1 と div.header-list) を横並びにする */
+    justify-content: space-between; /* 左右に要素を配置 */
+    align-items: center; /* 垂直方向の中央揃え */
+    font-family: Arial, sans-serif;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* わずかな影で立体感を出す */
+}
+
+/* <h1> タイトル */
+header h1 {
+    font-size: 24px;
+    color: #333333; /* 濃いめの灰色 */
+    font-weight: bold;
+    margin: 0; /* デフォルトマージンをリセット */
+    letter-spacing: 0.5px; /* 文字間隔を少し開ける */
+}
+
+/* ナビゲーションリスト全体 */
+.header-list ul {
+    list-style: none; /* リストの点（マーカー）を消す */
+    margin: 0;
+    padding: 0;
+    display: flex; /* リストアイテム (li) を横並びにする */
+    align-items: center;
+    gap: 20px; /* リストアイテム間のスペース */
+}
+
+/* リストアイテム */
+.header-list li {
+    /* 必要に応じてアイテムごとのスタイルを設定 */
+}
+
+/* リンクの基本スタイル */
+.header-list a {
+    text-decoration: none; /* リンクの下線を消す */
+    color: #555555; /* リンクの文字色 */
+    font-size: 14px;
+    padding: 5px 0;
+    transition: color 0.3s ease; /* ホバー時のアニメーション */
+}
+
+/* リンクにマウスが乗った時のスタイル */
+.header-list a:hover {
+    color: #007bff; /* 青色に変化（一般的なホバー効果） */
+}
+
+/* 特定のボタン（「いいね数ランキングを見る」）のスタイル */
+/* Railsで使われる "btn btn-primary" クラスを想定して記述 */
+.header-list .btn-primary {
+    background-color: #007bff; /* 青い背景 */
+    color: white; /* 白い文字色 */
+    border: none;
+    padding: 8px 15px; /* ボタンのパディング */
+    border-radius: 5px; /* 角を丸くする */
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+/* ボタンにマウスが乗った時のスタイル */
+.header-list .btn-primary:hover {
+    background-color: #0056b3; /* 濃い青に変化 */
+    color: white; /* ホバーしても文字色は白のまま */
+    transform: translateY(-1px); /* 少し浮き上がるような効果 */
 }

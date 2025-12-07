@@ -1,12 +1,21 @@
 
-<h3>一覧ページ</h3>
+<header class="header">
+  <div class="header-left"></div>  <!-- 左側の空白（中央揃えのために必要） -->
 
-<% if user_signed_in? %>
-  <%= link_to "マイページへ", user_path(current_user.id) %>
-<% end %>
-<%= link_to "いいね数ランキングを見る", like_tweets_path, class: "btn btn-primary" %>
-<%= link_to "質問一覧へ", questions_path %>
-<%= link_to "新規投稿へ", new_tweet_path %>
+  <h1 class="header-title">Living</h1>
+
+  <nav class="header-right">
+    <ul>
+      <% if user_signed_in? %>
+        <li><%= link_to "マイページへ", user_path(current_user.id) %></li>
+      <% end %>
+      <li><%= link_to "質問一覧へ", questions_path %></li>
+      <li><%= link_to "新規投稿へ", new_tweet_path %></li>
+    </ul>
+  </nav>
+</header>
+
+<%= link_to "いいね数ランキングを見る", like_tweets_path, class: "btn btn-primary" %></li>
 
 <div class="tweets-page">
   <!-- 左側：絞り込みフォーム -->
@@ -77,19 +86,14 @@
       <%= f.submit "検索" %>
     <% end %>
 
-    <%= form_tag({controller:"tweets",action:"index"}, method: :get) do %>
-        <%= text_field_tag :tag %>
-        <%= submit_tag 'タグを追加' %>
-    <% end %>
   </aside>
   
 
   <!-- 右側：投稿一覧 -->
+ 
     <div class="tweets-container">
+    <h3>一覧ページ</h3>
     <% @tweets.each do |t| %>
-      <% t.tags.each do |tag| %>
-          <span><%= tag.name %></span>
-      <% end %>
       <div class="tweet">
       
         <p>投稿者：<%= t.user_name %></p>
@@ -105,15 +109,25 @@
         <%= t.setumei %>
 
         <p>カテゴリ：<%= t.category.name if t.category.present? %></p>
+
+        <% t.tags.each do |tag| %>
+          <span><%= tag.name %></span>
+        <% end %>
         
         <% if user_signed_in? %>
         <% if current_user.already_liked?(t) %>
-            <%= button_to tweet_like_path(id: t.id, tweet_id: t.id), method: :delete do %>
-                <p>いいねを取り消す</p><%= t.likes.count %>
+            <%= button_to tweet_like_path(id: t.id, tweet_id: t.id), 
+                method: :delete,  
+                class: "like-button liked" do %>
+                <span class="label">いいね👍</span>
+                <span class="count"><%= t.likes.count %></span>
             <% end %>
         <% else %>
-            <%= button_to tweet_likes_path(id: t.id, tweet_id: t.id), method: :post do %>
-                <p>いいね👍</p><%= t.likes.count %>
+            <%= button_to tweet_likes_path(id: t.id, tweet_id: t.id), 
+                method: :post,
+                class: "like-button not-liked" do %>
+                <span class="label">いいね👍</span>
+                <span class="count"><%= t.likes.count %></span>
             <% end %>
         <% end %>
     <% else %>
